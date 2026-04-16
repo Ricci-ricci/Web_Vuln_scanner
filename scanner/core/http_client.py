@@ -37,10 +37,17 @@ class HttpClient:
         )
 
         logger.debug(f"HttpClient ready for {target.domain}")
-    def get(self , url:str , follow_redirects : bool | None = None , **kwargs) -> httpx.Response | None :
+
+    def get(
+        self, url: str, follow_redirects: bool | None = None, **kwargs
+    ) -> httpx.Response | None:
         try:
-            redirects = follow_redirects if follow_redirects is not None
-            response = self.client.get(url , follow_redirects=redirects , **kwargs)
+            redirects = (
+                follow_redirects
+                if follow_redirects is not None
+                else self.follow_redirects
+            )
+            response = self.client.get(url, follow_redirects=redirects, **kwargs)
             logger.debug(f"Get {url} -> {response.status_code}")
             return response
 
@@ -52,10 +59,17 @@ class HttpClient:
             logger.warning(f"Request Error on Get {url} - {e}")
             return None
 
-    def post(self , url:str , data:dict , follow_redirects : bool | None = None , **kwargs ) -> httpx.Response | None:
-        try :
-            redirects = follow_redirects if follow_redirects is not None else self.follow_redirects
-            response = self.client.post(url , data = data , follow_redirects=redirects , **kwargs
+    def post(
+        self, url: str, data: dict, follow_redirects: bool | None = None, **kwargs
+    ) -> httpx.Response | None:
+        try:
+            redirects = (
+                follow_redirects
+                if follow_redirects is not None
+                else self.follow_redirects
+            )
+            response = self.client.post(
+                url, data=data, follow_redirects=redirects, **kwargs
             )
             logger.debug(f"Post {url} -> {response.status_code}")
             return response
@@ -65,12 +79,13 @@ class HttpClient:
         except httpx.RequestError as e:
             logger.warning(f"Request error on Post {url} - {e}")
             return None
+
     def close(self):
-        self.client.close
+        self.client.close()
         logger.debug("HttpClient Session closed")
 
     def __enter__(self):
         return self
 
-    def __exit__(self):
-        return self.close()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
