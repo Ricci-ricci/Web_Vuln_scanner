@@ -15,8 +15,6 @@ logger = get_logger(__name__)
 
 
 class Spider:
-    """BFS web crawler that discovers URLs and HTML forms within a target scope."""
-
     def __init__(
         self,
         target: Target,
@@ -30,7 +28,6 @@ class Spider:
         self.max_pages = max_pages
 
     def crawl(self) -> tuple[list[str], list[Form]]:
-        """Crawl the target and return (urls, forms)."""
         visited: set[str] = set()
         urls: list[str] = []
         forms: list[Form] = []

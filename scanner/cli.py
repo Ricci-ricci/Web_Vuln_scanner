@@ -43,7 +43,6 @@ def scan(
         10, "--timeout", help="HTTP request timeout in seconds."
     ),
 ) -> None:
-    """Scan a target URL for common web vulnerabilities."""
     try:
         target = Target(url)
     except ValueError as e:
@@ -87,7 +86,6 @@ def scan(
 
 @app.command(name="list-modules")
 def list_modules() -> None:
-    """List all available scan modules."""
     console.print("[bold]Available modules:[/bold]")
     for name, cls in MODULE_MAP.items():
         console.print(f"  [cyan]{name:<20}[/cyan] {cls.description}")

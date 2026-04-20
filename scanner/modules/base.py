@@ -9,8 +9,6 @@ if TYPE_CHECKING:
 
 
 class Form:
-    """Lightweight container for a discovered HTML form."""
-
     def __init__(
         self,
         action: str,
@@ -26,8 +24,6 @@ class Form:
 
 
 class BaseModule(ABC):
-    """Abstract base class that every scan module must inherit from."""
-
     name: str = ""
     description: str = ""
 
